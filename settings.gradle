@@ -1,0 +1,4 @@
+rootProject.name = 'learn-kafka'
+
+include 'word-count'
+include 'fav-color'
