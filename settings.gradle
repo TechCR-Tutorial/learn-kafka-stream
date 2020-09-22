@@ -2,3 +2,5 @@ rootProject.name = 'learn-kafka'
 
 include 'word-count'
 include 'fav-color'
+include 'bank-balance-exactly-once'
+include 'user-event-enricher'

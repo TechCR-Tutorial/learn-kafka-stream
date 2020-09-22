@@ -23,6 +23,7 @@ public class FavColorApp {
         config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         config.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         config.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+        config.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, "0");
 
         List<String> favColors = Arrays.asList("BLUE", "RED", "GREEN");
         KStreamBuilder builder = new KStreamBuilder();
@@ -38,7 +39,7 @@ public class FavColorApp {
         userFavColor.to(Serdes.String(), Serdes.String(), "user-fav-color-output");
 
         KTable<String, String> userColorTable = builder.table("user-fav-color-output");
-        KTable<String, Long> favColorCount = userColorTable.groupBy((key, value) -> new KeyValue<>(value, value))
+        KTable<String, Long> favColorCount = userColorTable.groupBy((key, value) -> KeyValue.pair(value, value))
             .count("FavColorCount");
         System.out.println(favColorCount.toString());
         favColorCount.to(Serdes.String(), Serdes.Long(), "fav-color-count-output");
